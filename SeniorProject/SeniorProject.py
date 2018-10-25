@@ -197,6 +197,78 @@ def main(_):
                 validationRootMeanSquarredError = math.sqrt(
                     metrics.meanSquarredError(validationPredictions, validationTargets)
                     )
+        def userInput(
+            cancerDataframeUI
+            ):
+
+            # User inputs get inputted here.
+
+            radiusMeanUI = input("Please input the radius mean: ")
+            textureMeanUI = input("Please input the texture mean: ")
+            perimeterMeanUI = input("Please input perimeter mean: ")
+            areaMeanUI = input("Please input area mean: ")
+            smoothnessMeanUI = input("Please input smoothness mean: ")
+            compactnessMeanUI = input("Please input compactness mean: ")
+            concavityMeanUI = input("Please input concavity mean: ")
+            concavePointsMeanUI = input("Please input concave points mean: ")
+            symmetryMeanUI = input("Please input symmetry mean: ")
+            fractalDimensionUI = input("Please input fractal dimension mean: ")
+
+            # Setting up the user input array.
+
+            userInputDataframe = [radiusMeanUI, textureMeanUI, perimeterMeanUI, areaMeanUI, smoothnessMeanUI, compactnessMeanUI, concavityMeanUI, concaveMeanUI, symmetryMeanUI, fractalDimensionUI] 
+
+        def checkingAnswers(userInputDataframe):
+            
+            #Checking Answers.
+
+            print("Information inputted into the system. Make sure all of the information is correct.")
+            print("Radius Mean: " + userInputDataframe[0])
+            print("Texture Mean: " + userInputDataframe[1])
+            print("Perimeter Mean: " + userInputDataframe[2])
+            print("Area Mean: " + userInputDataframe[3])
+            print("Smoothness Mean: " + userInputDataframe[4])
+            print("Compactness Mean: " + userInputDataframe[5])
+            print("Concavity Mean: " + userInputDataframe[6])
+            print("Concave Points Mean: " + userInputDataframe[7])
+            print("Symmetry Mean: " + userInputDataframe[8])
+            print("Fractal Dimension: " + userInputDataframe[9])
+
+            # Asks user to point out errors.
+
+            print("Are all of these correct? Type Yes or No. If one is not correct please state which one is incorrect by typing " r"Radius Mean" " for example.")
+
+            wrongUserInputCheck = input("Yes/No: ")
+            if wrongUserInputCheck == Yes:
+            
+                if wrongUserInputCheck == No:
+                    wrongUserInputAnswer = input("Which input is wrong: ")
+                    if wrongUser == wrongUser:
+                        wrongUserInputAnswer = wrongUserInputAnswer
+                        wrongUserInputAnswer.lower()
+                        wrongUserInputAnswer.replace(" ", "")
+
+                        userNewInput = input("Please input correct " + wrongUserInputAnswer + ":")
+                        print("Does this look correct? " + userNewInput)
+                        checkAgainUserInput = input("Yes/No: ")
+                    
+                        if checkAgainUserInput == "Yes":
+                            userNewInput.replace("Radius")
+                            userInputDataframe
+                            print("Was there any other error that occured?")
+                            checkToSeeIfOtherErrror = input("Yes/No: ")
+
+                            if checkToSeeIfOtherError == "Yes":
+                                checkingAnswers() 
+                        
+                            if checkToSeeIfOtherErrors == "No":
+                                return checkingAnswers(0)
+
+                        if checkAgainUserInput == "No":
+                            userNewInput = input("Adding new values to arrray.")
+                        
+
+
 
 
     exit(0)
