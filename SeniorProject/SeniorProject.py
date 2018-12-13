@@ -313,6 +313,26 @@ def main(_):
                 numEpochs = 1,
                 shuffle = False)
         def recursive():
+
+            # Choose the first 200 (out of 576) examples for training.
+            training_examples = preprocess_features(cancerDataframe.head(200))
+            training_targets = preprocess_targets(cancerDataframe.head(200))
+
+            # Choose the last 376 (out of 576) examples for validation.
+            validation_examples = preprocess_features(cancerDataframe.tail(376))
+            validation_targets = preprocess_targets(cancerDataframe.tail(376))
+
+            # Double-check that we've done the right thing.
+            print("Training examples summary:")
+            display.display(training_examples.describe())
+            print("Validation examples summary:")
+            display.display(validation_examples.describe())
+
+            print("Training targets summary:")
+            display.display(training_targets.describe())
+            print("Validation targets summary:")
+            display.display(validation_targets.describe())
+
             print("Training Model")
             print("RMSE on the training data")
             trainingRMSE = []
@@ -336,6 +356,22 @@ def main(_):
                 validationRootMeanSquarredError = math.sqrt(
                     metrics.meanSquarredError(validationPredictions, validationTargets)
                     )
+                test_examples = preprocess_features(cancerDataframe)
+                test_targets = preprocess_targets(cancerDataframe)
+
+                predict_test_input_fn = lambda: cancerInput(
+                test_examples, 
+                test_targets["median_house_value"], 
+                num_epochs=1, 
+                shuffle=False)
+
+                test_predictions = linear_regressor.predict(input_fn=predict_test_input_fn)
+                test_predictions = np.array([item['predictions'][0] for item in test_predictions])
+
+                rootMeanSquaredError = math.sqrt(
+                    metrics.mean_squared_error(test_predictions, test_targets))
+
+                print("Final RMSE (on test data): %0.2f" % rootMeanSquaredError)
         def userInput(
             cancerDataframeUI
             ):
@@ -429,6 +465,48 @@ def main(_):
                 validationRootMeanSquarredError = math.sqrt(
                     metrics.meanSquarredError(validationPredictions, validationTargets)
                     )
+                test_examples = preprocess_features(cancerDataframe)
+                test_targets = preprocess_targets(cancerDataframe)
+
+                predict_test_input_fn = lambda: cancerInput(
+                test_examples, 
+                test_targets["median_house_value"], 
+                num_epochs=1, 
+                shuffle=False)
+
+                test_predictions = linear_regressor.predict(input_fn=predict_test_input_fn)
+                test_predictions = np.array([item['predictions'][0] for item in test_predictions])
+
+                rootMeanSquaredErrorNew = math.sqrt(
+                metrics.mean_squared_error(test_predictions, test_targets))
+
+
+                print("Final RMSE (on test data): %0.2f" % rootMeanSquaredErrorNew)
+
+                linear_classifier = train_linear_classifier_model(
+                learning_rate=0.000003,
+                steps=20000,
+                batch_size=500,
+                training_examples=training_examples,
+                training_targets=training_targets,
+                validation_examples=validation_examples,
+                validation_targets=validation_targets)
+
+                evaluation_metrics = linear_classifier.evaluate(input_fn=predict_validation_input_fn)
+
+                print("AUC on the validation set: %0.2f" % evaluation_metrics['auc'])
+                print("Accuracy on the validation set: %0.2f" % evaluation_metrics['accuracy']
+                def select_and_transform_features(source_df):
+                    DIAGNOSIS = zip(range(32, 44), range(33, 45))
+                    selected_examples = pd.DataFrame()
+                    selected_examples["median_income"] = source_df["median_income"]
+                    for r in DIAGNOSIS:
+                        selected_examples["Diagnosis_%d_to_%d" % r] = source_df["diagnosis"].apply(
+                        lambda l: 1.0 if l >= r[0] and l < r[1] else 0.0)
+                    return selected_examples
+
+                    selected_training_examples = select_and_transform_features(training_examples)
+                    selected_validation_examples = select_and_transform_features(validation_examples)
                  
                 recursive = [...]  # Populate with the output of the last run
                 defined = [...]  # The current results
