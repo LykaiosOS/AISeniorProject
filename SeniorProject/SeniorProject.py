@@ -1,6 +1,7 @@
 ﻿import numpy as np
 import sys
 import os
+import macpath
 import tensorflow as tf
 import pandas as pd
 import math 
@@ -21,8 +22,9 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string("input_dir", ".", "Input directory where training dataset and meta data are saved")
 tf.app.flags.DEFINE_string("output_dir", ".", "Output directory where output such as logs are saved.")
 tf.app.flags.DEFINE_string("log_dir", ".", "Model directory where final model files are saved.")
-
+print("Before Main")
 def main(_):
+    print("Hi")
     # Adding code here.
     with tf.Session() as sess:
         loading = sess.run(tf.constant("Booting Tensorflow, please wait it may take a long time."))
@@ -31,11 +33,11 @@ def main(_):
 
         # Adding Dataset.
 
-        cancerDataframe = pd.read_csv("")
+        cancerDataframe = pd.read_csv("data.csv")
 
         # Randomizing Data.
 
-        cancerDataframe.reindex(np.random.permutation(cancerDataset.index))
+        cancerDataframe.reindex(np.random.permutation(cancerDataframe.index))
 
         # Examining Data.
 
@@ -43,7 +45,7 @@ def main(_):
         def preprocessFetures(cancerDataframe):
 
             # Features to examine.
-
+            
             selectedFeatures = cancerDataframe[
                 ["diagnosis",
                 "radius_mean",
@@ -57,8 +59,8 @@ def main(_):
                 "symmetry_mean",
                 "fractal_dimension_mean"
                   ]]
-        processedFeatures = selectedFeatures.copy()
-        return preprocessFetures
+            trainingExamples = selectedFeatures
+            validationExamples = selectedFeatures
 
         # Create Synthetic Features here.
 
@@ -78,7 +80,7 @@ def main(_):
 
         plt.figure(figsize=(21, 100))
 
-        bx = plt.subplot(1, 2, 1)
+        ax = plt.subplot(1, 2, 1)
 
         ax.set_title("Validation Data Radius/Area")
         ax.set_autoscaley_on = False
@@ -495,7 +497,7 @@ def main(_):
                 evaluation_metrics = linear_classifier.evaluate(input_fn=predict_validation_input_fn)
 
                 print("AUC on the validation set: %0.2f" % evaluation_metrics['auc'])
-                print("Accuracy on the validation set: %0.2f" % evaluation_metrics['accuracy']
+                print("Accuracy on the validation set: %0.2f" % evaluation_metrics['accuracy'])
                 def select_and_transform_features(source_df):
                     DIAGNOSIS = zip(range(32, 44), range(33, 45))
                     selected_examples = pd.DataFrame()
@@ -523,9 +525,6 @@ def main(_):
                     print("Chances are the node is malignant.")
                 else:
                     print("Chances are the node is benign.")
-
-exit(0)
-
-
-if __name__ == "__main__":
-    tf.app.run()
+print("After Main")
+if __name__ == '__main__':
+   tf.app.run()
