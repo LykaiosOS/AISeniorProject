@@ -28,53 +28,62 @@ def main(_):
     # Adding code here.
     with tf.Session() as sess:
         loading = sess.run(tf.constant("Booting Tensorflow, please wait it may take a long time."))
-        print(loading)
-        # Add boot code here. 
+    print(loading)
+    # Add boot code here. 
+    # Adding Dataset.
 
-        # Adding Dataset.
+    cancerDataframe = pd.read_csv("data.csv")
 
-        cancerDataframe = pd.read_csv("data.csv")
+    # Randomizing Data.
 
-        # Randomizing Data.
+    cancerDataframe.reindex(np.random.permutation(cancerDataframe.index))
 
-        cancerDataframe.reindex(np.random.permutation(cancerDataframe.index))
+    # Examining Data.
 
-        # Examining Data.
+    cancerDataframe.describe()
+    def preprocessFetures(cancerDataframe):
 
-        cancerDataframe.describe()
-        def preprocessFetures(cancerDataframe):
-
-            # Features to examine.
+    # Features to examine.
             
-            selectedFeatures = cancerDataframe[
-                ["diagnosis",
-                "radius_mean",
-                "texture_mean",
-                "perimeter_mean",
-                "area_mean",
-                "smoothness_mean",
-                "compactness_mean",
-                "concavity_mean",
-                "concave_points_mean",
-                "symmetry_mean",
-                "fractal_dimension_mean"
-                  ]]
-            trainingExamples = selectedFeatures
-            validationExamples = selectedFeatures
+        selectedFeatures = cancerDataframe[
+            ["diagnosis",
+            "radius_mean",
+            "texture_mean",
+            "perimeter_mean",
+            "area_mean",
+            "smoothness_mean",
+            "compactness_mean",
+            "concavity_mean",
+            "concave_points_mean",
+            "symmetry_mean",
+            "fractal_dimension_mean"
+            ]]
+        trainingExamples = selectedFeatures
+        validationExamples = ["diagnosis",
+            "radius_mean",
+            "texture_mean",
+            "perimeter_mean",
+            "area_mean",
+            "smoothness_mean",
+            "compactness_mean",
+            "concavity_mean",
+            "concave_points_mean",
+            "symmetry_mean",
+            "fractal_dimension_mean"]
 
-        # Create Synthetic Features here.
+# Create Synthetic Features here.
 
-        def preprocessTargets(cancerDataframe):
+    def preprocessTargets(cancerDataframe):
 
-            # Prepares Target Features.
+    # Prepares Target Features.
 
-            outputTargets = pd.Dataframe()
+        outputTargets = pd.Dataframe()
 
-            # Scale stuff here.
+    # Scale stuff here.
 
-            outputTargets["diagnosis"] = (
-                cancerDataframe["diagnosis"])
-            return outputTargets
+        outputTargets["diagnosis"] = (
+        cancerDataframe["diagnosis"])
+        print(outputTargets)
 
         # Plotting Graph of Radius and Area.
 
@@ -88,10 +97,10 @@ def main(_):
         ax.set_autoscalex_on = False
         ax.set_xlim(2, 13)
         plt.scatter(validationExamples["radius_mean"],
-                    validationExamples["area_mean"],
-                    cmap = "coolwarm",
-                    c = validationTargets["diagnosis"] / validationTargets["diagnosis"].max()
-                    )
+        validationExamples["area_mean"],
+        cmap = "coolwarm",
+        c = validationTargets["diagnosis"] / validationTargets["diagnosis"].max()
+        )
 
         ax = plt.subplot(1,2,2)
         ax.set_title("Training Data Radius/Area")
@@ -101,9 +110,9 @@ def main(_):
         ax.set_autoscalex_on(False)
         ax.set_xlim([2, 13])
         plt.scatter(training_examples["radius_mean"],
-            training_examples["area_mean"],
-            cmap="coolwarm",
-            c=training_targets["diagnosis"] / training_targets["diagnosis"].max())
+        training_examples["area_mean"],
+        cmap="coolwarm",
+        c=training_targets["diagnosis"] / training_targets["diagnosis"].max())
         _ = plt.plot()
 
         plt.figure(figsize=(21, 100))
@@ -195,7 +204,7 @@ def main(_):
         print(welcome)
 
         # Main Code goes here.
-        
+        print("Past Plots")
         def cancerTrainingModel(features, batchSize = 1, shuffle = True, numEpochs = None):
             # Training the function with multiple variables.
 
